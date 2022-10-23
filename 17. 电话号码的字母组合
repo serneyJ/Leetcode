@@ -1,0 +1,47 @@
+class Solution {
+	unordered_map<char, string> map;//保存每个数字映射的字母
+	vector<string> ret;//保存所有结果组合
+public:
+	vector<string> letterCombinations(string digits) 
+	{
+		if (digits.empty()) return ret;
+		//保存每个数字映射的字母
+		map['2'] = "abc";
+		map['3'] = "def";
+		map['4'] = "ghi";
+		map['5'] = "jkl";
+		map['6'] = "mno";
+		map['7'] = "pqrs";
+		map['8'] = "tuv";
+		map['9'] = "wxyz";
+
+		//组合需要的字母个数
+		int num = digits.size();
+		string cur;
+		dfs(digits, cur,num,0);
+		return ret;
+	}
+	//cur将找到的字母先存放在里面，等到字母个数等于需要的个数时，再压入结果数组
+	//index：记录遍历到了当前数字的第几个字符
+	//num: 组合需要的字母个数
+	//n:当前用到了第一个数字
+	void dfs(string digits,string cur,int num,int n)
+	{
+		if (cur.size() == num)//找到了一个可行解
+		{
+			ret.push_back(cur);
+			return;
+		}
+		//遍历当前数字剩余的字母
+		for (int i = 0; i < map[digits[n]].size(); i++)//注意这里每一层，都是从第一个字母开始进行遍历
+		{
+			//把当前数字对应的第index个字母放入cur数组中
+			cur.push_back(map[digits[n]][i]);
+			//遍历剩余字母
+			dfs(digits, cur,num, n + 1);
+			//回溯
+			cur.pop_back();
+		}
+	}
+
+};
